@@ -41,7 +41,11 @@ impl Decoder for SCGICodec {
 
     fn decode(&mut self, buf: &mut BytesMut) -> Result<Option<BytesMut>, io::Error> {
         // Forward content (HTTP response, typically?) as-is
-        Ok(Some(buf.split_to(buf.len())))
+        if buf.is_empty() {
+            Ok(None)
+        } else {
+            Ok(Some(buf.split_to(buf.len())))
+        }
     }
 }
 
